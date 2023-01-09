@@ -1,13 +1,14 @@
 import * as THREE from "three";
 import { WireframeGeometry } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import GUI from "lil-gui";
 
 //シーン
 const scene = new THREE.Scene();
 
 //カメラ
 const camera = new THREE.PerspectiveCamera(
-  100,
+  75,
   window.innerWidth / window.innerHeight,
   0.1,
   100
@@ -43,6 +44,24 @@ plane.rotation.x = -Math.PI * 0.5;
 plane.position.y = -0.5;
 torus.position.x = -1.5;
 scene.add(box, sphere, plane, torus);
+
+//UIデバッグ
+const gui = new GUI();
+
+//フォルダー
+const boxFolder = gui.addFolder("box");
+const sphereFolder = gui.addFolder("sphere");
+
+boxFolder.add(box.position, "x").min(-3).max(3).step(0.01).name("transformX");
+boxFolder.add(box.position, "y", -3, 3, 0.01).name("transformY");
+boxFolder.add(box.position, "z", -3, 3, 0.01).name("transformZ");
+boxFolder.add(box.rotation, "x", -3, 3, 0.01).name("rotationX");
+boxFolder.add(box.rotation, "y", -3, 3, 0.01).name("rotationY");
+boxFolder.add(box.rotation, "z", -3, 3, 0.01).name("rotationZ");
+sphereFolder.add(sphere.position, "x").min(-3).max(3).step(0.01).name("sphereX");
+
+boxFolder.add(box, "visible");
+gui.add(material, "wireframe");
 
 //ライト
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
